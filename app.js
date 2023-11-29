@@ -8,9 +8,9 @@ const multer = require('multer');
 var syncSql = require('sync-sql');
 
 dbDetails_async = {
-  host: "localhost",
-  user: "root",
-  password: "root",
+  host: "my-buy-buddy-server.mysql.database.azure.com",
+  user: "buybuddyadmin",
+  password: "Ramesh1@",
   database: "buybuddy"
 }
 
@@ -51,14 +51,20 @@ app.post("/uLogin",function(req,res){
   con.query(sql,function(err,result){
     if(result.length>0){
       const token =  jwt.sign({ email: result[0].email.trim().toUpperCase(), userId: result[0].userId}, process.env.secret,{ expiresIn: '1h' })
-        if(res.status(200).json({
-            token:token,
-            authorization: "success",
-            userId  : result[0].userId
-        } ) );
-        else{
-           res.send("Something Went Wrong");
-        }}
+        // if(res.status(200).json({
+        //     token:token,
+        //     authorization: "success",
+        //     userId  : result[0].userId
+        // } ) );
+        // else{
+        //    res.send("Something Went Wrong");
+        // }
+        res.status(200).json({
+          token: token,
+          authorization: "success",
+          userId: result[0].userId
+        });
+      }
       else[
         res.send("Invalid Login Details")
       ]
